@@ -2,18 +2,20 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 st.title("Credit Risk Prediction")
 
 # Collect user input
 age = st.slider("Age", 20, 80)
-house = st.selectbox("Housing Status", ["own", "free", "rent"])
-purpose = st.selectbox("Purpose", ["car", "radio/TV", "furniture/equipment", "business", "education", "repairs", "domestic appliances", "vacation/others"])
-checking_account = st.selectbox("Current Checking Account Amount", ["Little", "Moderate", "Rich"])
-savings_account = st.selectbox("Current Savings Account Amount", ["Little", "Moderate", "Rich", "Quite Rich"])
+house = st.selectbox("Housing Status", ["Own", "Free", "Rent"])
+purpose = st.selectbox("Purpose", ["Car", "Radio/TV", "Furniture/Equipment", "Business", "Education", "Repairs", "Domestic Appliances", "Vacation/Others"])
+checking_account = st.selectbox("Current Checking Account Amount: (Little = In-Overdraft - £500, Moderate = £500-£1500, Rich = +£1500)", ["Little", "Moderate", "Rich"])
+savings_account = st.selectbox("Current Savings Account Amount: (Little = 0-£500, Moderate = £500-£10000, Rich = +£10000-£30000, Quite Rich = +£30000)", ["Little", "Moderate", "Rich", "Quite Rich"])
 credit_amount = st.number_input("Credit Amount", min_value=0)
-duration = st.number_input("Number of Months Till Repayment", min_value=1)
+duration = st.number_input("Minimum Number of Months Till Repayment", min_value=1)
 job = st.selectbox("Current Occupation/Residency (0: Untrained & Non-Resident, 1: Untrained & Resident, 2: Trained/Skilled, 3: High Skilled)", [0,1,2,3])
 # Add other features as needed...
 
@@ -73,3 +75,31 @@ def categorise_risk(score):
 score = calculate_risk_score(input_data.iloc[0])
 st.write(f"Risk Score: {score}")
 st.write(f"Risk Level: {categorise_risk(score)}")
+
+plt.style.use('seaborn-v0_8)
+fig, ax = plt.subplots(fig_size=(10,2))
+
+ax.barh(y=0, width=5, left=0, color='green', edgecolor='black', label='Low Risk')
+ax.barh(y=0, width=2, left=5, color='orange', edgecolor='black', label='Moderate Risk')
+ax.barh(y=0, width=3, left=7, color='red', edgecolor='black', label='High Risk')
+              
+
+# Overlay user's score
+ax.axvline(score, color='blue', linestyle='--', linewidth=2)
+ax.text(user_score + 0.1, 0.1, f'User Score: {score}', color='blue', fontsize=12)
+
+# Formatting
+ax.set_xlim(0, 10)
+ax.set_ylim(-0.5, 0.5)
+ax.set_yticks([])
+ax.set_xlabel('Credit Risk Score (0 = Low Risk, 10 = High Risk)', fontsize=12)
+ax.set_title('User Credit Risk Position on Risk Scale', fontsize=14)
+ax.legend(loc='upper right')
+
+# Save figure
+output_path = "/mnt/data/credit_risk_score_chart.png"
+plt.tight_layout()
+plt.savefig(output_path)
+plt.close()
+
+output_path
