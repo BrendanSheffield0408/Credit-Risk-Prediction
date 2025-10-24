@@ -38,8 +38,8 @@ input_data = pd.DataFrame({
 
 job_risk = {0:3, 1:2, 2:1, 3:1}
 housing_risk = {'Free':1, 'Rented':2, 'Owned':1}
-checking_risk = {1:3, 2:2, 3:1}
-saving_risk = {1:3, 2:2, 3:1, 4:1}
+checking_risk = {0:3, 1:2, 2:1}
+saving_risk = {0:3, 1:2, 2:1, 3:1}
 repayment_threshold = 130.33
 duration_threshold = 18.0
 upper_duration_threshold = 24.0
@@ -105,7 +105,7 @@ suggestions = []
 if job in [0, 1]:
     suggestions.append("📌 Consider applying for skilled roles to reduce occupational risk.")
 
-if house == "Rent":
+if house == "Rented":
     suggestions.append("📌 Owning or living rent-free is considered lower risk than renting.")
 
 if checking_map[checking_account] < 2 or savings_map[savings_account] < 3:
@@ -155,16 +155,18 @@ st.write(f"🔄 New Risk Score: {new_score}")
 st.write(f"🔄 New Risk Level: {categorise_risk(new_score)}")
 st.write(f"💰 New Monthly Repayment: £{new_repayment:.2f}")
 st.write(f"📆 New Duration: {new_duration} months")
+st.success(f"✅ Your credit risk score has improved to {new_score} — now classified as {categorise_risk(new_score)}.")
+
 
 st.subheader("Duration To Repay Affects on Credit & Monthly Payments")
 duration_threshold = 18.0
 upper_duration_threshold = 24.0
 durations = [6,12,18,24,30]
-checking_account_num = checking_map[checking_account]
-saving_accounts_num = savings_map[savings_account]
-
 monthly_repayments = []
 risk_scores = []
+
+checking_account_num = checking_map[checking_account]
+saving_accounts_num = savings_map[savings_account]
 
 for duration in durations:
     repayment = credit_amount / duration
@@ -203,10 +205,5 @@ st.pyplot(fig)
 ax1.axvline(duration, color='grey', linestyle='--')
 ax2.axhline(score, color='grey', linestyle='--')
 
-st.markdown(f"""
-📊 **Trade-Off Summary**  
-- Shorter durations increase monthly repayment but may reduce risk score  
-- Longer durations ease repayment but may push you into higher risk zones  
-- Your current duration: **{duration} months**  
-- Your current monthly repayment: **£{credit_amount / duration:.2f}**
-""")
+st.info(f"ℹ️ Longer durations reduce monthly repayment but may increase your credit risk score.")
+
