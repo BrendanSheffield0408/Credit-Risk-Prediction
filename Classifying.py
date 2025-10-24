@@ -166,7 +166,7 @@ risk_scores = []
 
 for duration in durations:
     repayment = credit_amount / duration
-    score = job_risk[job] + housing_risk[housing] + checking_risk[checking_account_num] + saving_risk[saving_accounts_num]
+    score = job_risk[job] + housing_risk[house] + checking_risk[checking_account_num] + saving_risk[saving_accounts_num]
     
     if repayment >= repayment_threshold:
         score += 1
