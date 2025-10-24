@@ -86,7 +86,7 @@ ax.barh(y=0, width=3, left=7, color='red', edgecolor='black', label='High Risk')
 
 # Overlay user's score
 ax.axvline(score, color='blue', linestyle='--', linewidth=2)
-ax.text(user_score + 0.1, 0.1, f'User Score: {score}', color='blue', fontsize=12)
+ax.text(score + 0.1, 0.1, f'User Score: {score}', color='blue', fontsize=12)
 
 # Formatting
 ax.set_xlim(0, 10)
