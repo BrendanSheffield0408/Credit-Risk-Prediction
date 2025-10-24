@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-st.title("Credit Risk Prediction")
+st.title("Credit Risk Analysis")
 
 # Collect user input
 age = st.slider("Age", 20, 80)
