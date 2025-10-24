@@ -16,4 +16,5 @@ Duration (numeric, in month)
 Purpose (text: car, furniture/equipment, radio/TV, domestic appliances, repairs, education, business, vacation/others)
 
 Goal: Predict loan default risk and explain predictions to non-technical stakeholders.
+
 Goal: Create Interface App able to suggest Improvements to Credit Scores 
