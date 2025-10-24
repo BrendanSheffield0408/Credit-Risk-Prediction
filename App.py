@@ -1,3 +1,8 @@
+import pandas as pd
+import numpy as np
+import streamlit as st
+import joblib
+
 # Load models and preprocessing pipeline
 tree_model = joblib.load('best_dt.pkl')
 preprocessor = joblib.load('preprocessor.pkl')
