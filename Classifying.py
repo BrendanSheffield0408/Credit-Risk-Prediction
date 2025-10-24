@@ -76,7 +76,7 @@ score = calculate_risk_score(input_data.iloc[0])
 st.write(f"Risk Score: {score}")
 st.write(f"Risk Level: {categorise_risk(score)}")
 
-plt.style.use('seaborn-v0_8)
+plt.style.use('seaborn-v0_8')
 fig, ax = plt.subplots(fig_size=(10,2))
 
 ax.barh(y=0, width=5, left=0, color='green', edgecolor='black', label='Low Risk')
