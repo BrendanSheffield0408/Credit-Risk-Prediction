@@ -96,10 +96,4 @@ ax.set_xlabel('Credit Risk Score (0 = Low Risk, 10 = High Risk)', fontsize=12)
 ax.set_title('User Credit Risk Position on Risk Scale', fontsize=14)
 ax.legend(loc='upper right')
 
-# Save figure
-output_path = "/mnt/data/credit_risk_score_chart.png"
-plt.tight_layout()
-plt.savefig(output_path)
-plt.close()
-
-output_path
+st.pyplot(fig)
