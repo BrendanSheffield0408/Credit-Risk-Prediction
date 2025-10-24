@@ -74,4 +74,4 @@ def categorise_risk(score):
 
 score = calculate_risk_score(input_data.iloc[0])
 st.write(f"Risk Score: {score}")
-st.write(f"Risk Level: {categorise_risk(score)")
+st.write(f"Risk Level: {categorise_risk(score)}")
