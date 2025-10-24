@@ -79,9 +79,9 @@ st.write(f"Risk Level: {categorise_risk(score)}")
 plt.style.use('seaborn-v0_8')
 fig, ax = plt.subplots(figsize=(10,2))
 
-ax.barh(y=0, width=5, left=0, color='green', edgecolor='black', label='Low Risk')
-ax.barh(y=0, width=2, left=5, color='orange', edgecolor='black', label='Moderate Risk')
-ax.barh(y=0, width=3, left=7, color='red', edgecolor='black', label='High Risk')
+ax.barh(y=2, width=5, left=0, color='green', edgecolor='black', label='Low Risk')
+ax.barh(y=2, width=2, left=5, color='orange', edgecolor='black', label='Moderate Risk')
+ax.barh(y=2, width=3, left=7, color='red', edgecolor='black', label='High Risk')
               
 
 # Overlay user's score
