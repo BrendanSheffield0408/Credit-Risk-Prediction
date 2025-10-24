@@ -79,9 +79,9 @@ st.write(f"Risk Level: {categorise_risk(score)}")
 plt.style.use('seaborn-v0_8')
 fig, ax = plt.subplots(figsize=(10,2))
 
-ax.barh(y=2, width=5, left=0, color='green', edgecolor='black', label='Low Risk')
-ax.barh(y=2, width=2, left=5, color='orange', edgecolor='black', label='Moderate Risk')
-ax.barh(y=2, width=3, left=7, color='red', edgecolor='black', label='High Risk')
+ax.barh(y=0, width=5, left=0, color='green', edgecolor='black', label='Low Risk')
+ax.barh(y=0, width=2, left=5, color='orange', edgecolor='black', label='Moderate Risk')
+ax.barh(y=0, width=3, left=7, color='red', edgecolor='black', label='High Risk')
               
 
 # Overlay user's score
@@ -89,7 +89,7 @@ ax.axvline(score, color='blue', linestyle='--', linewidth=2)
 ax.text(score + 0.1, 0.1, f'User Score: {score}', color='blue', fontsize=12)
 
 # Formatting
-ax.set_xlim(0, 10)
+ax.set_xlim(2, 10)
 ax.set_ylim(-0.5, 0.5)
 ax.set_yticks([])
 ax.set_title('User Credit Risk Position on Risk Scale', fontsize=14)
