@@ -156,3 +156,55 @@ st.write(f"🔄 New Risk Level: {categorise_risk(new_score)}")
 st.write(f"💰 New Monthly Repayment: £{new_repayment:.2f}")
 st.write(f"📆 New Duration: {new_duration} months")
 
+st.subheader("Duration To Repay Affects on Credit & Monthly Payments")
+duration_threshold = 18.0
+upper_duration_threshold = 24.0
+durations = [6,12,18,24,30]
+
+monthly_repayments = []
+risk_scores = []
+
+for duration in durations:
+    repayment = credit_amount / duration
+    score = job_risk[job] + housing_risk[housing] + checking_risk[checking_account_num] + saving_risk[saving_accounts_num]
+    
+    if repayment >= repayment_threshold:
+        score += 1
+    if age >= 65 and duration > 24:
+        score += 1
+    if duration > duration_threshold and duration < upper_duration_threshold:
+        score -= 1
+    if duration >= upper_duration_threshold:
+        score -= 2
+
+    monthly_repayments.append(repayment)
+    risk_scores.append(score)
+
+# Plotting
+plt.style.use('seaborn-v0_8')
+fig, ax1, = plt.subplots(figsize=(10, 6))
+# Monthly repayment line
+ax1.set_xlabel('Repayment Duration (months)')
+ax1.set_ylabel('Monthly Repayment (£)', color='tab:red')
+ax1.plot(durations, monthly_repayments, color='tab:red', marker='o')
+ax1.tick_params(axis='y', labelcolor='tab:red')
+
+# Risk score line
+ax2 = ax1.twinx()
+ax2.set_ylabel('Risk Score', color='tab:blue')
+ax2.plot(durations, risk_scores, color='tab:blue', marker='s')
+ax2.tick_params(axis='y', labelcolor='tab:blue')
+
+fig.suptitle('Impact of Repayment Duration on Monthly Repayment and Risk Score', fontsize=14)
+st.pyplot(fig)
+
+ax1.axvline(duration, color='grey', linestyle='--')
+ax2.axhline(score, color='grey', linestyle='--')
+
+st.markdown(f"""
+📊 **Trade-Off Summary**  
+- Shorter durations increase monthly repayment but may reduce risk score  
+- Longer durations ease repayment but may push you into higher risk zones  
+- Your current duration: **{duration} months**  
+- Your current monthly repayment: **£{credit_amount / duration:.2f}**
+""")
