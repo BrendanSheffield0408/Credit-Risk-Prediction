@@ -205,10 +205,6 @@ ax2.plot(x, risk_scores, color='tab:red', marker='o', linewidth=2, label='Risk S
 ax2.set_ylabel('Risk Score', color='tab:red')
 ax2.tick_params(axis='y', labelcolor='tab:red')
 
-# Annotate risk score points
-for i in range(len(durations)):
-    ax2.text(x[i], risk_scores[i] + 0.3, f"{risk_scores[i]:.1f}", ha='center', fontsize=9, color='tab:red')
-
 # X-axis and title
 ax1.set_xticks(x)
 ax1.set_xticklabels(durations)
@@ -216,8 +212,12 @@ ax1.set_xlabel('Repayment Duration (months)')
 fig.suptitle(f'Monthly Repayment vs Risk Score by Duration\nCredit Amount: £{credit_amount}', fontsize=14)
 
 # Legends
-ax1.legend(loc='upper left')
-ax2.legend(loc='upper right')
+# Add bottom-left label for Monthly Repayment axis
+fig.text(0.1, 0.02, 'Monthly Repayment (£)', ha='left', va='center', fontsize=11, color='tab:green')
+
+# Add bottom-right label for Risk Score axis
+fig.text(0.9, 0.02, 'Risk Score', ha='right', va='center', fontsize=11, color='tab:red')
+
 
 st.pyplot(fig)
 
