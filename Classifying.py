@@ -2,9 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import joblib
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
+
 
 st.title("Credit Risk Prediction")
 
