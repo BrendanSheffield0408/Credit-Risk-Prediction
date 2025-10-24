@@ -3,9 +3,30 @@ import numpy as np
 import streamlit as st
 import joblib
 
+
 # Load models and preprocessing pipeline
 tree_model = joblib.load('best_dt.pkl')
-preprocessor = joblib.load('preprocessor.pkl')
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+
+# Define preprocessing pipeline
+numeric_features = ['Age', 'Credit amount', 'Duration', 'credit_repayment_per_month']
+categorical_features = ['Housing', 'Purpose']
+
+numeric_transformer = Pipeline(steps=[
+    ("scaler", StandardScaler())
+])
+
+categorical_transformer = Pipeline(steps=[
+    ("encoder", OneHotEncoder(sparse_output=False, drop='if_binary'))
+])
+
+preprocessor = ColumnTransformer(transformers=[
+    ("num", numeric_transformer, numeric_features),
+    ("cat", categorical_transformer, categorical_features)
+])
+
 
 st.title("Credit Risk Prediction")
 
@@ -33,7 +54,7 @@ input_data = pd.DataFrame({
 
 
 # Preprocess input
-X_input = preprocessor.transform(input_data)
+X_input = preprocessor.fit_transform(input_data)
 
 # Predict
 #log_pred = log_model.predict_proba(X_input)[0][1]
