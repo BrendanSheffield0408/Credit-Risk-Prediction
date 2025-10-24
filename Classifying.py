@@ -186,24 +186,20 @@ for duration in durations:
 
 # Plotting
 plt.style.use('seaborn-v0_8')
-fig, ax1, = plt.subplots(figsize=(10, 6))
-# Monthly repayment line
-ax1.set_xlabel('Repayment Duration (months)')
-ax1.set_ylabel('Monthly Repayment (£)', color='tab:red')
-ax1.plot(durations, monthly_repayments, color='tab:red', marker='o')
-ax1.tick_params(axis='y', labelcolor='tab:red')
+fig, ax = plt.subplots(figsize=(10, 6))
+width = 0.35
+x = np.arange(len(durations))
 
-# Risk score line
-ax2 = ax1.twinx()
-ax2.set_ylabel('Risk Score', color='tab:blue')
-ax2.plot(durations, risk_scores, color='tab:blue', marker='s')
-ax2.tick_params(axis='y', labelcolor='tab:blue')
+ax.bar(x - width/2, monthly_repayments, width, label='Monthly Repayment (£)', color='tab:red')
+ax.bar(x + width/2, risk_scores, width, label='Risk Score', color='tab:blue')
 
-fig.suptitle('Impact of Repayment Duration on Monthly Repayment and Risk Score', fontsize=14)
+ax.set_xticks(x)
+ax.set_xticklabels(durations)
+ax.set_xlabel('Repayment Duration (months)')
+ax.set_title('Impact of Duration on Monthly Repayment and Risk Score')
+ax.legend()
 st.pyplot(fig)
 
-ax1.axvline(duration, color='grey', linestyle='--')
-ax2.axhline(score, color='grey', linestyle='--')
 
 st.info(f"ℹ️ Longer durations reduce monthly repayment but may increase your credit risk score.")
 
