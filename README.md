@@ -18,3 +18,4 @@ Purpose (text: car, furniture/equipment, radio/TV, domestic appliances, repairs,
 Goal: Predict loan default risk and explain predictions to non-technical stakeholders.
 
 Goal: Create Interface App able to suggest Improvements to Credit Scores 
+(https://credit-risk-analysis-brendansheffield.streamlit.app/)
