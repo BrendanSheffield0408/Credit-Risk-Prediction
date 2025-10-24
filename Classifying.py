@@ -160,13 +160,15 @@ st.subheader("Duration To Repay Affects on Credit & Monthly Payments")
 duration_threshold = 18.0
 upper_duration_threshold = 24.0
 durations = [6,12,18,24,30]
+checking_account_num = checking_map[checking_account]
+saving_accounts_num = savings_map[savings_account]
 
 monthly_repayments = []
 risk_scores = []
 
 for duration in durations:
     repayment = credit_amount / duration
-    score = job_risk[job] + housing_risk[house] + checking_risk[checking_account] + saving_risk[saving_accounts]
+    score = job_risk[job] + housing_risk[house] + checking_risk[checking_account_num] + saving_risk[saving_accounts_num]
     
     if repayment >= repayment_threshold:
         score += 1
