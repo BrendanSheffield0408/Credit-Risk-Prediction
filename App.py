@@ -6,26 +6,11 @@ import joblib
 
 # Load models and preprocessing pipeline
 tree_model = joblib.load('best_dt.pkl')
+preprocessor = joblib.load('preprocessor.pkl')
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 
-# Define preprocessing pipeline
-numeric_features = ['Age', 'Credit amount', 'Duration', 'credit_repayment_per_month']
-categorical_features = ['Housing', 'Purpose']
-
-numeric_transformer = Pipeline(steps=[
-    ("scaler", StandardScaler())
-])
-
-categorical_transformer = Pipeline(steps=[
-    ("encoder", OneHotEncoder(sparse_output=False, drop='if_binary'))
-])
-
-preprocessor = ColumnTransformer(transformers=[
-    ("num", numeric_transformer, numeric_features),
-    ("cat", categorical_transformer, categorical_features)
-])
 
 
 st.title("Credit Risk Prediction")
