@@ -93,7 +93,7 @@ ax.set_xlim(2, 10)
 ax.set_ylim(-0.5, 0.5)
 ax.set_yticks([])
 ax.set_title('User Credit Risk Position on Risk Scale', fontsize=14)
-ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.3), ncol=3, frameon=False)
+ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.5), ncol=3, frameon=False)
 
 
 st.pyplot(fig)
