@@ -25,13 +25,17 @@ credit_amount = st.number_input("Credit Amount", min_value=0)
 duration = st.number_input("Number of Months Till Repayment", min_value=1)
 # Add other features as needed...
 
-# Create input DataFrame
+checking_map = {'Little': 0, 'Moderate': 1, 'Rich': 2}
+savings_map = {'Little': 0, 'Moderate': 1, 'Rich': 2, 'Quite Rich': 3}
+
+
+# Collect user input
 input_data = pd.DataFrame({
     'Age': [age],
     'Housing': [house],
     'Purpose': [purpose],
-    'Checking account': [checking_account],
-    'Savings accounts': [savings_account],
+    'checking_account_num': [checking_map[checking_account]],
+    'saving_accounts_num': [savings_map[savings_account]],
     'Credit amount': [credit_amount],
     'Duration': [duration],
     'credit_repayment_per_month': [credit_amount / duration]
