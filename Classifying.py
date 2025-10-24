@@ -159,9 +159,10 @@ st.success(f"✅ Your credit risk score has improved to {new_score} — now clas
 
 
 st.subheader("Duration To Repay Affects on Credit & Monthly Payments")
+
 duration_threshold = 18.0
 upper_duration_threshold = 24.0
-durations = [6,12,18,24,30]
+durations = [6, 12, 18, 24, 30]
 monthly_repayments = []
 risk_scores = []
 
@@ -171,7 +172,7 @@ saving_accounts_num = savings_map[savings_account]
 for duration in durations:
     repayment = credit_amount / duration
     score = job_risk[job] + housing_risk[house] + checking_risk[checking_account_num] + saving_risk[saving_accounts_num]
-    
+
     if repayment >= repayment_threshold:
         score += 1
     if age >= 65 and duration > 24:
@@ -184,22 +185,45 @@ for duration in durations:
     monthly_repayments.append(repayment)
     risk_scores.append(score)
 
+# Color mapping based on risk score
+def get_risk_color(score):
+    if score < 6:
+        return 'green'
+    elif score < 8:
+        return 'orange'
+    else:
+        return 'red'
+
+bar_colors = [get_risk_color(s) for s in risk_scores]
+
 # Plotting
 plt.style.use('seaborn-v0_8')
 fig, ax = plt.subplots(figsize=(10, 6))
-width = 0.35
 x = np.arange(len(durations))
 
-ax.bar(x - width/2, monthly_repayments, width, label='Monthly Repayment (£)', color='tab:red')
-ax.bar(x + width/2, risk_scores, width, label='Risk Score', color='tab:blue')
+bars = ax.bar(x, monthly_repayments, color=bar_colors, width=0.6)
 
+# Annotate each bar with repayment value
+for i, bar in enumerate(bars):
+    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 5, f"£{monthly_repayments[i]:.2f}", ha='center', fontsize=9)
+
+# Axis and title
 ax.set_xticks(x)
 ax.set_xticklabels(durations)
 ax.set_xlabel('Repayment Duration (months)')
-ax.set_title('Impact of Duration on Monthly Repayment and Risk Score')
-ax.legend()
+ax.set_ylabel('Monthly Repayment (£)')
+ax.set_title(f'Monthly Repayment vs Duration\nCredit Amount: £{credit_amount}', fontsize=14)
+
+# Legend for risk zones
+from matplotlib.patches import Patch
+legend_elements = [
+    Patch(facecolor='green', label='Low Risk'),
+    Patch(facecolor='orange', label='Moderate Risk'),
+    Patch(facecolor='red', label='High Risk')
+]
+ax.legend(handles=legend_elements, loc='upper right')
+
 st.pyplot(fig)
 
-
-st.info(f"ℹ️ Longer durations reduce monthly repayment but may increase your credit risk score.")
+st.info("ℹ️ Longer durations reduce monthly repayment but may increase credit risk. This chart shows how both metrics shift across repayment terms.")
 
