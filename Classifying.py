@@ -213,4 +213,13 @@ for i in range(len(durations)):
 ax1.set_xticks(x)
 ax1.set_xticklabels(durations)
 ax1.set_xlabel('Repayment Duration (months)')
-fig.suptitle(f'Monthly Repayment vs Risk Score by Duration\nCredit Amount: £{credit
+fig.suptitle(f'Monthly Repayment vs Risk Score by Duration\nCredit Amount: £{credit_amount}', fontsize=14)
+
+# Legends
+ax1.legend(loc='upper left')
+ax2.legend(loc='upper right')
+
+st.pyplot(fig)
+
+st.info("ℹ️ Shorter durations increase monthly repayment but may reduce credit risk. This chart shows how both metrics shift across repayment terms.")
+
