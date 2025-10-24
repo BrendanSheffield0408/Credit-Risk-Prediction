@@ -2,16 +2,9 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import joblib
-
-
-# Load models and preprocessing pipeline
-tree_model = joblib.load('best_dt.pkl')
-preprocessor = joblib.load('preprocessor.pkl')
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-
-
 
 st.title("Credit Risk Prediction")
 
