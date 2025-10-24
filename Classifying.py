@@ -123,7 +123,7 @@ def recalculate_score_with_improvements(row):
 
     # Apply hypothetical improvements
     improved['Job'] = max(row['Job'], 2)  # Assume user moves to Skilled
-    improved['Housing'] = 'Own' if row['Housing'] == 'Rent' else row['Housing']
+    improved['Housing'] = 'Owned' if row['Housing'] == 'Rented' else row['Housing']
     improved['checking_account_num'] = max(row['checking_account_num'], 2)
     improved['saving_accounts_num'] = max(row['saving_accounts_num'], 3)
     improved['Credit amount'] = min(row['Credit amount'], 5000)
