@@ -1,12 +1,3 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-import streamlit as st
-import joblib  # or pickle
-
-
 # Load models and preprocessing pipeline
 tree_model = joblib.load('best_dt.pkl')
 preprocessor = joblib.load('preprocessor.pkl')
