@@ -10,11 +10,11 @@ st.title("Credit Risk Analysis")
 
 # Collect user input
 age = st.slider("Age", 20, 80)
-house = st.selectbox("Housing Status", ["Own", "Free", "Rent"])
+house = st.selectbox("Housing Status", ["Owned", "Free", "Rented"])
 purpose = st.selectbox("Purpose", ["Car", "Radio/TV", "Furniture/Equipment", "Business", "Education", "Repairs", "Domestic Appliances", "Vacation/Others"])
-checking_account = st.selectbox("Current Checking Account Amount: (Little = In-Overdraft - £500, Moderate = £500-£1500, Rich = +£1500)", ["Little", "Moderate", "Rich"])
+checking_account = st.selectbox("Current Checking Account Amount:(Little = In-Overdraft - £500, Moderate = £500-£1500, Rich = +£1500)", ["Little", "Moderate", "Rich"])
 savings_account = st.selectbox("Current Savings Account Amount: (Little = 0-£500, Moderate = £500-£10000, Rich = +£10000-£30000, Quite Rich = +£30000)", ["Little", "Moderate", "Rich", "Quite Rich"])
-credit_amount = st.number_input("Credit Amount", min_value=0)
+credit_amount = st.number_input("Credit Amount Request", min_value=0)
 duration = st.number_input("Minimum Number of Months Till Repayment", min_value=1)
 job = st.selectbox("Current Occupation/Residency (0: Untrained & Non-Resident, 1: Untrained & Resident, 2: Trained/Skilled, 3: High Skilled)", [0,1,2,3])
 # Add other features as needed...
@@ -28,7 +28,7 @@ input_data = pd.DataFrame({
     'Age': [age],
     'Job': [job],
     'Housing': [house],
-    'Purpose': [purpose],
+    'Purpose For Applying For Credit': [purpose],
     'checking_account_num': [checking_map[checking_account]],
     'saving_accounts_num': [savings_map[savings_account]],
     'Credit amount': [credit_amount],
@@ -37,7 +37,7 @@ input_data = pd.DataFrame({
 })
 
 job_risk = {0:3, 1:2, 2:1, 3:1}
-housing_risk = {'free':1, 'rent':2, 'own':1}
+housing_risk = {'Free':1, 'Rented':2, 'Owned':1}
 checking_risk = {1:3, 2:2, 3:1}
 saving_risk = {1:3, 2:2, 3:1, 4:1}
 repayment_threshold = 130.33
@@ -97,3 +97,62 @@ ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.5), ncol=3, frameon=False)
 
 
 st.pyplot(fig)
+
+st.subheader("Suggestions to Reduce Credit Risk")
+
+suggestions = []
+
+if job in [0, 1]:
+    suggestions.append("📌 Consider applying for skilled roles to reduce occupational risk.")
+
+if house == "Rent":
+    suggestions.append("📌 Owning or living rent-free is considered lower risk than renting.")
+
+if checking_map[checking_account] < 2 or savings_map[savings_account] < 3:
+    suggestions.append("📌 Increase checking account balance and build savings to improve financial resilience.")
+
+if credit_amount > 5000:
+    suggestions.append("📌 Reducing the requested credit amount may improve repayment ratio.")
+
+for tip in suggestions:
+    st.markdown(tip)
+
+
+def recalculate_score_with_improvements(row):
+    improved = row.copy()
+
+    # Apply hypothetical improvements
+    improved['Job'] = max(row['Job'], 2)  # Assume user moves to Skilled
+    improved['Housing'] = 'Own' if row['Housing'] == 'Rent' else row['Housing']
+    improved['checking_account_num'] = max(row['checking_account_num'], 2)
+    improved['saving_accounts_num'] = max(row['saving_accounts_num'], 3)
+    improved['Credit amount'] = min(row['Credit amount'], 5000)
+    improved['Duration'] = min(row['Duration'], 24)
+    improved['credit_repayment_per_month'] = improved['Credit amount'] / improved['Duration']
+
+    # Recalculate score
+    new_score = 0
+    new_score += job_risk.get(improved['Job'], 2)
+    new_score += housing_risk.get(improved['Housing'], 2)
+    new_score += checking_risk.get(improved['checking_account_num'], 2)
+    new_score += saving_risk.get(improved['saving_accounts_num'], 2)
+
+    if improved['credit_repayment_per_month'] >= repayment_threshold:
+        new_score += 1
+    if improved['Age'] >= 65 and improved['Duration'] > 24:
+        new_score += 1
+    if duration_threshold < improved['Duration'] < upper_duration_threshold:
+        new_score -= 1
+    if improved['Duration'] >= upper_duration_threshold:
+        new_score -= 2
+
+    return new_score, improved['credit_repayment_per_month'], improved['Duration']
+
+new_score, new_repayment, new_duration = recalculate_score_with_improvements(input_data.iloc[0])
+
+st.subheader("Impact of Suggested Improvements")
+st.write(f"🔄 New Risk Score: {new_score}")
+st.write(f"🔄 New Risk Level: {categorise_risk(new_score)}")
+st.write(f"💰 New Monthly Repayment: £{new_repayment:.2f}")
+st.write(f"📆 New Duration: {new_duration} months")
+
