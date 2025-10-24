@@ -39,7 +39,7 @@ input_data = pd.DataFrame({
 
 
 # Preprocess input
-X_input = preprocessor.fit_transform(input_data)
+X_input = preprocessor.transform(input_data)
 
 # Predict
 #log_pred = log_model.predict_proba(X_input)[0][1]
