@@ -92,8 +92,8 @@ ax.text(score + 0.1, 0.1, f'User Score: {score}', color='blue', fontsize=12)
 ax.set_xlim(0, 10)
 ax.set_ylim(-0.5, 0.5)
 ax.set_yticks([])
-ax.set_xlabel('Credit Risk Score (0 = Low Risk, 10 = High Risk)', fontsize=12)
 ax.set_title('User Credit Risk Position on Risk Scale', fontsize=14)
-ax.legend(loc='upper right')
+ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.3), ncol=3, frameon=False)
+
 
 st.pyplot(fig)
