@@ -185,41 +185,44 @@ for duration in durations:
     monthly_repayments.append(repayment)
     risk_scores.append(score)
 
-# Color mapping based on risk score
-def get_risk_color(score):
-    if score < 6:
-        return 'green'
-    elif score < 8:
-        return 'orange'
-    else:
-        return 'red'
+# Normalize risk scores for color gradient
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 
-bar_colors = [get_risk_color(s) for s in risk_scores]
+norm = mcolors.Normalize(vmin=min(risk_scores), vmax=max(risk_scores))
+cmap = cm.Reds
+risk_colors = [cmap(norm(score)) for score in risk_scores]
 
-# Plotting
+# Plotting dual bars
 plt.style.use('seaborn-v0_8')
 fig, ax = plt.subplots(figsize=(10, 6))
 x = np.arange(len(durations))
+width = 0.35
 
-bars = ax.bar(x, monthly_repayments, color=bar_colors, width=0.6)
+# Left bars: Monthly repayment
+repayment_bars = ax.bar(x - width/2, monthly_repayments, width, label='Monthly Repayment (£)', color='tab:green')
 
-# Annotate each bar with repayment value
-for i, bar in enumerate(bars):
-    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 5, f"£{monthly_repayments[i]:.2f}", ha='center', fontsize=9)
+# Right bars: Risk score with gradient
+risk_bars = ax.bar(x + width/2, risk_scores, width, label='Risk Score', color=risk_colors)
+
+# Annotate bars
+for i in range(len(durations)):
+    ax.text(x[i] - width/2, monthly_repayments[i] + 1, f"£{monthly_repayments[i]:.2f}", ha='center', fontsize=9)
+    ax.text(x[i] + width/2, risk_scores[i] + 0.5, f"{risk_scores[i]:.1f}", ha='center', fontsize=9)
 
 # Axis and title
 ax.set_xticks(x)
 ax.set_xticklabels(durations)
 ax.set_xlabel('Repayment Duration (months)')
-ax.set_ylabel('Monthly Repayment (£)')
-ax.set_title(f'Monthly Repayment vs Duration\nCredit Amount: £{credit_amount}', fontsize=14)
+ax.set_ylabel('Value')
+ax.set_title(f'Monthly Repayment and Risk Score by Duration\nCredit Amount: £{credit_amount}', fontsize=14)
 
-# Legend for risk zones
+# Legend
 from matplotlib.patches import Patch
 legend_elements = [
-    Patch(facecolor='green', label='Low Risk'),
-    Patch(facecolor='orange', label='Moderate Risk'),
-    Patch(facecolor='red', label='High Risk')
+    Patch(facecolor='tab:green', label='Monthly Repayment'),
+    Patch(facecolor=cmap(norm(max(risk_scores))), label='High Risk'),
+    Patch(facecolor=cmap(norm(min(risk_scores))), label='Lower Risk')
 ]
 ax.legend(handles=legend_elements, loc='upper right')
 
